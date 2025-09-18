@@ -97,16 +97,24 @@ class Program{
             Console.WriteLine("Game Over.");
             Console.WriteLine("Your Score is: " + player.score);
         }
-        void incrementCardCounter(Player player, Card card)
+    void incrementCardCounter(Player player, Card card)
+    {
+        player.cardDraws++;
+        switch (card.suite)
         {
-            switch (card.suite)
-            {
-                case "Diamonds": player.diamondDraws++; break;
-                case "Hearts": player.heartDraws++; break;
-                case "Spades": player.spadeDraws++; break;
-                case "Clubs": player.clubDraws++; break;
-            }
+            case "Diamonds": player.diamondDraws++; break;
+            case "Hearts": player.heartDraws++; break;
+            case "Spades": player.spadeDraws++; break;
+            case "Clubs": player.clubDraws++; break;
         }
+
+        switch (card.rarity)
+        {
+                case eRarity.IDK: player.loreDraws++; break;
+                case eRarity.Special: player.specialDraws++; break;
+                case eRarity.Evil: player.evilDraws++; break;
+        }
+    }
     bool roundStart(Player player, List<Card> normalDeck, List<Card> evilDeck, List<Card> bonusDeck, List<Card> playerHand, ref int playerBet, List<Card> computerHand)
     {
         int playerHandValue = 0;
@@ -115,6 +123,13 @@ class Program{
 
         while (true)
         {
+            if(player.notFollowingInstructions > 3)
+                {
+                    Console.WriteLine("Since ur not following instructions, Y=you're betting everything this round.");
+                    playerBet = player.chips;
+                    player.notFollowingInstructions = 0;
+                    break;
+                }
             Console.WriteLine("How much are you betting?");
             Console.Write("--> ");
 
@@ -126,6 +141,8 @@ class Program{
             {
                 Console.WriteLine("Gang, at least put a solid number in there.");
                 Console.Write("--> ");
+                player.notFollowingInstructions++;
+                continue;
             }
             if (playerBet == 0)
             {
@@ -255,6 +272,7 @@ class Program{
                 {
                     Console.WriteLine("That's not in the choices, gang. Try again will you?");
                     Console.Write("Your answer --> ");
+                    player.notFollowingInstructions++;
                 }
                 else
                 {
@@ -426,4 +444,51 @@ class Program{
             return currentPoints;
         }
     }
+    void checkTriggers(Player player)
+        {
+            bool isTriggered1 = false;
+            bool isTriggered2 = false;
+            bool isTriggered3 = false;
+            bool isTriggered4 = false;
+            bool isTriggered5 = false;
+            bool isTriggered6 = false;
+            bool isTriggered7 = false;
+
+            if (player.cardDraws > 100 && !isTriggered1)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Touch grass or something gahdahm.");
+                isTriggered1 = true;
+            }
+            if(player.loreDraws >= 5 && !isTriggered6)
+            {
+                //add special ending
+                isTriggered6 = true;
+            }
+            if(player.stands > 50 && !isTriggered2)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Maybe you should stop being a lil b***** and stop standing so much.");
+                isTriggered2 = true;
+            }
+            if(player.highestRound > 8 && !isTriggered3)
+            {
+                //trigger minigame
+                isTriggered3 = true;
+            }
+            if(player.blackJacks > 10 && !isTriggered4)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Ur always getting lucky these days have this (+1 multiplier).");
+                player.multiplier++;
+                isTriggered4 = true;
+            }
+            if(player.busts > 10 && !isTriggered5)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Ok this maybe unfair. Have this to keep going +100 chips).");
+                player.chips += 100;
+                isTriggered5 = true;
+            }
+        }
 }
