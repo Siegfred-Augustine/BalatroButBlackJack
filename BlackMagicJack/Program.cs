@@ -11,7 +11,12 @@ class Program{
     }
     void gameStart()
         {
-            Player player = new Player("");
+            Console.WriteLine("Welcome to a Normal Game of BlackJack. Enter your name:")
+            Console.Write("--> ")
+            String name = Console.ReadLine();
+            if (name == null || name == "")
+                name = "This person has no name";
+            Player player = new Player(name);
             player.chips = 100;
             int playerBet = 0;
             int totalCardCount = 0;
@@ -32,7 +37,7 @@ class Program{
                 Console.Clear();
                 player.currentRoundPoints = 0;
                 roundNum++;
-
+                Console.WriteLine($"Hi {player.name}, here are your current stats.\nCards Drawn : {player.cardDraws}\n BlackJacks :  {player.blackJacks}\nBusts : {player.busts}");
                 Console.WriteLine($"Current score: {player.score}");
                 Console.WriteLine($"Round {roundNum}");
                 Console.WriteLine($"You currently have {player.chips} chips.");
@@ -255,9 +260,9 @@ class Program{
     {
         Console.WriteLine();
         Console.WriteLine("Draw a card from one of these decks:");
-        Console.WriteLine("Type [N] to draw from the /'Normal Deck/'.");
-        Console.WriteLine("Type [E] to draw from the /'Evil Deck/'.");
-        Console.WriteLine("Type [B] to draw from the /'Bonus Deck/'.");
+        Console.WriteLine("Type [N] to draw from the \'Normal Deck\'.");
+        Console.WriteLine("Type [E] to draw from the \'Evil Deck\'.");
+        Console.WriteLine("Type [B] to draw from the \'Bonus Deck\'.");
         Console.WriteLine("Type [S] to stand.");
         Console.WriteLine("Choose wisely gang u got this fr.");
         Console.Write("Your answer --> ");
