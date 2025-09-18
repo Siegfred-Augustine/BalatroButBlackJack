@@ -37,7 +37,7 @@ namespace BlackMagicJack {
                 Console.Clear();
                 player.currentRoundPoints = 0;
                 roundNum++;
-                Console.WriteLine($"Hi {player.name}, here are your current stats.\nCards Drawn : {player.cardDraws}\n BlackJacks :  {player.blackJacks}\nBusts : {player.busts}");
+                Console.WriteLine($"Hi {player.name}, here are your current stats.\nCards Drawn : {player.cardDraws}\nBlackJacks :  {player.blackJacks}\nBusts : {player.busts}");
                 Console.WriteLine($"Current score: {player.score}");
                 Console.WriteLine($"Round {roundNum}");
                 Console.WriteLine($"You currently have {player.chips} chips.");
@@ -234,7 +234,7 @@ namespace BlackMagicJack {
             if (currentPoints == 0)
             {
                 Console.WriteLine();
-                Console.WriteLine("Busted :(");
+                Console.WriteLine("I Busted :(");
                 Console.WriteLine();
                 return false;
             }
@@ -336,6 +336,7 @@ namespace BlackMagicJack {
                     }
                     break;
                 case "s":
+                    player.stands++;
                     return false;
 
             }
