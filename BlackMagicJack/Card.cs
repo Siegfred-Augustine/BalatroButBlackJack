@@ -133,7 +133,7 @@ namespace BlackMagicJack
                     }
                     break;
                 case 9:
-                    Console.WriteLine("Don't spoil urself bbg <3 (+1 chip)");
+                    Console.WriteLine("Go spoil urself bbg <3 (+1 chip)");
                     player.chips++;
                     break;
                 case 10:

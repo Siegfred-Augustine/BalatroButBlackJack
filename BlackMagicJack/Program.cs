@@ -11,8 +11,11 @@ namespace BlackMagicJack {
         }
         void gameStart()
         {
-            Console.WriteLine("Welcome to a Normal Game of BlackJack. Enter your name:");
-            Console.Write("--> ");
+            Console.WriteLine("Welcome to a Normal Game of BlackJack. You and the computer starts with 2 cards. The computer will show one of it's cards to you." +
+                                "You win when the total value of your cards reach 21 (Black Jack) or is closest to 21. Face cards are treated with a value of 10 and Aces are " +
+                                "treated as 11 or 1 depending on the count. You can draw more cards but \'bust\' if your total goes above 21.\n");
+            Console.WriteLine("Add the amount of chips you are willing to bet and earn a point to add to your score each time you win a round. Good luck!\n");
+            Console.Write("Your name --> ");
             String name = Console.ReadLine();
             if (name == null || name == "")
                 name = "This person has no name";
@@ -55,14 +58,14 @@ namespace BlackMagicJack {
                 if (isRoundWin)
                 {
                     Console.WriteLine("Congrats on winning");
-                    Console.WriteLine("You won " + (playerBet * player.multiplier + playerBet));
+                    Console.WriteLine("You won " + (playerBet * player.multiplier + playerBet) + " chips.");
                     player.chips += (playerBet * player.multiplier + playerBet);
                     player.score++;
                 }
                 else
                 {
                     Console.WriteLine("You Lose");
-                    Console.WriteLine("You're not for this lil bro");
+                    Console.WriteLine("");
                     Console.WriteLine();
                     if(player.score != 0)
                         player.score--;
@@ -130,6 +133,7 @@ namespace BlackMagicJack {
         {
             int playerHandValue = 0;
             int computerHandValue = 0;
+            aces = 0;
 
 
             while (true)
@@ -182,14 +186,17 @@ namespace BlackMagicJack {
             }
             foreach (Card card in playerHand)
             {
+                Thread.Sleep(2000);
                 Console.WriteLine("You drew the " + card.value + " of " + card.suite + ".");
                 addPoints(card, player);
             }
+
             foreach (Card card in computerHand)
             {
-                computerHandValue = addPoints(card, computerHandValue, ref aces);
+                addPoints(card, ref computerHandValue, ref aces);
             }
             Card firstComCard = computerHand[0];
+            Thread.Sleep(2000);
             Console.WriteLine("The computer drew the " + firstComCard.value + " of " + firstComCard.suite);
 
             while (player.currentRoundPoints != 21 && player.currentRoundPoints != 0)
@@ -205,6 +212,7 @@ namespace BlackMagicJack {
                 Console.WriteLine();
                 Console.WriteLine("BLACKJAAAAACKKKK RAHHHHH!!!");
                 Console.WriteLine();
+                player.blackJacks++;
                 return true;
             }
             else if (player.currentRoundPoints == 0)
@@ -212,19 +220,22 @@ namespace BlackMagicJack {
                 Console.WriteLine();
                 Console.WriteLine("It's a BUST!");
                 Console.WriteLine();
+                player.busts++;
                 return false;
             }
 
             while (computerDraw(normalDeck, computerHand, ref computerHandValue, ref aces));
-            foreach(Card card in computerHand)
-            {
-                Thread.Sleep(3000);
-                Console.WriteLine($"The computer drew the {card.value} of {card.suite}");
-            }
+
+                for (int i = 1; i < computerHand.Count; i++)
+                {
+                    Thread.Sleep(3000);
+                    Console.WriteLine($"The computer drew the {computerHand[i].value} of {computerHand[i].suite}");
+                }
             Console.WriteLine("The computer scored " + computerHandValue);
             playerHandValue = player.currentRoundPoints;
 
             Console.WriteLine();
+            Program.checkTriggers(player);
 
             if (computerHandValue > playerHandValue || computerHandValue == playerHandValue)
             {
@@ -242,7 +253,7 @@ namespace BlackMagicJack {
                 Console.WriteLine();
                 return false;
             }
-            if (currentPoints == 21)
+            else if (currentPoints == 21)
             {
                 Console.WriteLine();
                 Console.WriteLine("BlackJack for me lil bro");
@@ -250,11 +261,11 @@ namespace BlackMagicJack {
                 return false;
             }
 
-            if (currentPoints < 17)
+            else if (currentPoints < 17)
             {
                 Card card = draw(normalDeck);
                 computerHand.Add(card);
-                currentPoints = addPoints(card, currentPoints, ref aces);
+                addPoints(card, ref currentPoints, ref aces);
                 return true;
             }
             return false;
@@ -420,18 +431,10 @@ namespace BlackMagicJack {
             return;
         }
 
-        public int addPoints(Card card, int currentPoints, ref int aces)
-        {
 
-            if (currentPoints > 21)
-            {
-                currentPoints = 0;
-            }
-            else if (currentPoints == 21)
-            {
-                return currentPoints;
-            }
-            else if (card.value == "Jack" || card.value == "Queen" || card.value == "King")
+        public void addPoints(Card card, ref int currentPoints, ref int aces)
+        {
+            if (card.value == "Jack" || card.value == "Queen" || card.value == "King")
             {
                 currentPoints += 10;
             }
@@ -439,25 +442,23 @@ namespace BlackMagicJack {
             {
                 aces++;
                 currentPoints += 11;
-                while (currentPoints > 21 && aces > 0)
-                {
-                    currentPoints -= 10;
-                    aces--;
-                }
             }
             else
             {
                 currentPoints += Convert.ToInt32(card.value);
             }
 
-            if (currentPoints > 21)
+            while (currentPoints > 21 && aces > 0)
             {
-                currentPoints = 0;
+                currentPoints -= 10;
+                aces--;
             }
-            return currentPoints;
+            if (currentPoints > 21)
+                currentPoints = 0;
         }
 
-    void checkTriggers(Player player)
+
+        public static void checkTriggers(Player player)
         {
             if (player.cardDraws > 100 && !player.isTriggered1)
             {
