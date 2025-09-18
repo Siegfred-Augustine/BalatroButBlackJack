@@ -70,6 +70,7 @@ namespace BlackMagicJack {
                 String answer = "";
                 while (true)
                 {
+                    Console.WriteLine();
                     Console.WriteLine("Do you want to play another round?[y/n]");
                     Console.Write("--> ");
                     try
@@ -99,6 +100,7 @@ namespace BlackMagicJack {
                     break;
                 }
             }
+            Console.WriteLine();
             Console.WriteLine("Game Over.");
             Console.WriteLine("Your Score is: " + player.score);
         }
