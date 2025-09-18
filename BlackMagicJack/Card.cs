@@ -112,10 +112,12 @@ namespace BlackMagicJack
                     break;
                 case 5:
                     Console.WriteLine("Evil Deck Refill!");
+                    evilDeck.Clear();
                     EvilCard.initializeDeck(evilDeck);
                     break;
                 case 6:
                     Console.WriteLine("Deck Refill!");
+                    normalDeck.Clear();
                     NormalCard.initializeDeck(normalDeck);
                     break;
                 case 7:

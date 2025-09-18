@@ -136,7 +136,7 @@ namespace BlackMagicJack {
             {
                 if (player.notFollowingInstructions > 3)
                 {
-                    Console.WriteLine("Since ur not following instructions, Y=you're betting everything this round.");
+                    Console.WriteLine("Since ur not following instructions, you're betting everything this round.");
                     playerBet = player.chips;
                     player.notFollowingInstructions = 0;
                     break;
@@ -216,6 +216,10 @@ namespace BlackMagicJack {
             }
 
             while (computerDraw(normalDeck, computerHand, ref computerHandValue, ref aces));
+            foreach(Card card in computerHand)
+            {
+                Console.WriteLine($"The computer drew the {card.value} of {card.suite}");
+            }
             Console.WriteLine("The computer scored " + computerHandValue);
             playerHandValue = player.currentRoundPoints;
 
@@ -230,6 +234,7 @@ namespace BlackMagicJack {
 
         bool computerDraw(List<Card> normalDeck, List<Card> computerHand, ref int currentPoints, ref int aces)
         {
+            Thread.Sleep(3000);
             if (currentPoints == 0)
             {
                 Console.WriteLine();
@@ -250,7 +255,6 @@ namespace BlackMagicJack {
                 Card card = draw(normalDeck);
                 computerHand.Add(card);
                 currentPoints = addPoints(card, currentPoints, ref aces);
-                Console.WriteLine($"The computer drew the {card.value} of {card.suite}");
                 return true;
             }
             return false;
@@ -267,7 +271,6 @@ namespace BlackMagicJack {
             Console.WriteLine("Choose wisely gang u got this fr.");
             Console.Write("Your answer --> ");
             String answer = "";
-            Console.WriteLine();
 
             while (true)
             {
@@ -292,7 +295,11 @@ namespace BlackMagicJack {
                     Console.Write("Your answer --> ");
                 }
             }
+            Console.WriteLine();
             Card currentCard = null;
+
+            Console.WriteLine("...");
+            Thread.Sleep(3000);
             switch (answer)
             {
                 case "n":
