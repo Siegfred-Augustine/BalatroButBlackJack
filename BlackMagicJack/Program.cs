@@ -452,7 +452,6 @@ namespace BlackMagicJack {
 
     void checkTriggers(Player player)
         {
-
             if (player.cardDraws > 100 && !player.isTriggered1)
             {
                 Console.WriteLine("");
