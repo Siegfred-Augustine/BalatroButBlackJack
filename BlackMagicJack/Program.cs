@@ -218,6 +218,7 @@ namespace BlackMagicJack {
             while (computerDraw(normalDeck, computerHand, ref computerHandValue, ref aces));
             foreach(Card card in computerHand)
             {
+                Thread.Sleep(3000);
                 Console.WriteLine($"The computer drew the {card.value} of {card.suite}");
             }
             Console.WriteLine("The computer scored " + computerHandValue);
@@ -234,7 +235,6 @@ namespace BlackMagicJack {
 
         bool computerDraw(List<Card> normalDeck, List<Card> computerHand, ref int currentPoints, ref int aces)
         {
-            Thread.Sleep(3000);
             if (currentPoints == 0)
             {
                 Console.WriteLine();

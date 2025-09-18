@@ -89,10 +89,10 @@ namespace BlackMagicJack
             {
                 case 0:
                     Console.WriteLine("I'm taking ur chips brodie");
-                    player.chips -= 10;
+                    player.chips -= 50;
                     break;
                 case 1:
-                    Console.WriteLine("Say goodbye to 10 cards.");
+                    Console.WriteLine("Say goodbye to 20 cards.");
                     EvilCard.cardStealer(normalDeck);
                     break;
                 case 2:
@@ -191,7 +191,7 @@ namespace BlackMagicJack
         }
         public static void cardStealer(List<Card> deck)
         {
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 20; i++)
             {
                 int index = RNG.random.Next(deck.Count);
                 deck.RemoveAt(index);
