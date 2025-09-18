@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\linux_assets\\repos\\BalatroButBlackJack\\BlackMagicJack\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|d:\\linux_assets\\repos\\balatrobutblackjack\\blackmagicjack\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|solutionrelative:player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|d:\\linux_assets\\repos\\balatrobutblackjack\\blackmagicjack\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|d:\\linux_assets\\repos\\balatrobutblackjack\\blackmagicjack\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|solutionrelative:player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AB7DBD40-D61E-4A76-9F02-0E34B70CF66C}|BlackMagicJack.csproj|d:\\linux_assets\\repos\\balatrobutblackjack\\blackmagicjack\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,26 +30,25 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Player.cs",
               "DocumentMoniker": "D:\\linux_assets\\repos\\BalatroButBlackJack\\BlackMagicJack\\Player.cs",
               "RelativeDocumentMoniker": "Player.cs",
               "ToolTip": "D:\\linux_assets\\repos\\BalatroButBlackJack\\BlackMagicJack\\Player.cs",
               "RelativeToolTip": "Player.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T15:14:53.299Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-16T15:14:53.299Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\linux_assets\\repos\\BalatroButBlackJack\\BlackMagicJack\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "D:\\linux_assets\\repos\\BalatroButBlackJack\\BlackMagicJack\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-16T13:39:19.133Z",
               "EditorCaption": ""
