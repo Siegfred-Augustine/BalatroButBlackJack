@@ -21,6 +21,7 @@ namespace BlackMagicJack {
             int playerBet = 0;
             int totalCardCount = 0;
             int roundNum = 0;
+            int aces = 0;
 
             List<Card> normalDeck = new List<Card>();
             List<Card> evilDeck = new List<Card>();
@@ -39,7 +40,7 @@ namespace BlackMagicJack {
                 roundNum++;
                 Console.WriteLine($"Hi {player.name}, here are your current stats.\nCards Drawn : {player.cardDraws}\nBlackJacks :  {player.blackJacks}\nBusts : {player.busts}");
                 Console.WriteLine($"Current score: {player.score}");
-                Console.WriteLine($"Round {roundNum}");
+                Console.WriteLine($"\nRound {roundNum}");
                 Console.WriteLine($"You currently have {player.chips} chips.");
                 Console.WriteLine($"There are currently {totalCardCount} cards.");
                 Console.WriteLine($"There are {normalDeck.Count} Normal Cards, {evilDeck.Count} Evil Cards and {bonusDeck.Count} Bonus Cards.");
@@ -49,21 +50,22 @@ namespace BlackMagicJack {
                 List<Card> computerHand = new List<Card>();
                 playerBet = 0;
 
-                bool isRoundWin = roundStart(player, normalDeck, evilDeck, bonusDeck, playerHand, ref playerBet, computerHand);
+                bool isRoundWin = roundStart(player, normalDeck, evilDeck, bonusDeck, playerHand, ref playerBet, computerHand, ref aces);
 
                 if (isRoundWin)
                 {
-                    Console.WriteLine("Congrats ig");
+                    Console.WriteLine("Congrats on winning");
                     Console.WriteLine("You won " + (playerBet * player.multiplier + playerBet));
                     player.chips += (playerBet * player.multiplier + playerBet);
                     player.score++;
                 }
                 else
                 {
-                    Console.WriteLine();
+                    Console.WriteLine("You Lose");
                     Console.WriteLine("You're not for this lil bro");
                     Console.WriteLine();
-                    player.score--;
+                    if(player.score != 0)
+                        player.score--;
                 }
                 totalCardCount = normalDeck.Count + evilDeck.Count + bonusDeck.Count;
 
@@ -82,13 +84,15 @@ namespace BlackMagicJack {
                         }
                         else
                         {
-                            Console.WriteLine("There are two options ffs");
+                            Console.WriteLine("There are literally only two options ffs.");
+                            player.notFollowingInstructions++;
                         }
 
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine("Ur getting on my nerves");
+                        player.notFollowingInstructions++;
                     }
                 }
                 if (answer == "y")
@@ -122,7 +126,7 @@ namespace BlackMagicJack {
                 case eRarity.Evil: player.evilDraws++; break;
             }
         }
-        bool roundStart(Player player, List<Card> normalDeck, List<Card> evilDeck, List<Card> bonusDeck, List<Card> playerHand, ref int playerBet, List<Card> computerHand)
+        bool roundStart(Player player, List<Card> normalDeck, List<Card> evilDeck, List<Card> bonusDeck, List<Card> playerHand, ref int playerBet, List<Card> computerHand, ref int aces)
         {
             int playerHandValue = 0;
             int computerHandValue = 0;
@@ -147,7 +151,6 @@ namespace BlackMagicJack {
                 catch (Exception e)
                 {
                     Console.WriteLine("Gang, at least put a solid number in there.");
-                    Console.Write("--> ");
                     player.notFollowingInstructions++;
                     continue;
                 }
@@ -184,7 +187,7 @@ namespace BlackMagicJack {
             }
             foreach (Card card in computerHand)
             {
-                computerHandValue = addPoints(card, computerHandValue);
+                computerHandValue = addPoints(card, computerHandValue, ref aces);
             }
             Card firstComCard = computerHand[0];
             Console.WriteLine("The computer drew the " + firstComCard.value + " of " + firstComCard.suite);
@@ -212,15 +215,9 @@ namespace BlackMagicJack {
                 return false;
             }
 
-            while (computerDraw(normalDeck, computerHand, ref computerHandValue)) ;
+            while (computerDraw(normalDeck, computerHand, ref computerHandValue, ref aces));
+            Console.WriteLine("The computer scored " + computerHandValue);
             playerHandValue = player.currentRoundPoints;
-
-            Console.WriteLine();
-
-            for (int i = 1; i < computerHand.Count; i++)
-            {
-                Console.WriteLine("The computer drew the " + computerHand[i].value + " of " + computerHand[i].suite);
-            }
 
             Console.WriteLine();
 
@@ -231,7 +228,7 @@ namespace BlackMagicJack {
             return true;
         }
 
-        bool computerDraw(List<Card> normalDeck, List<Card> computerHand, ref int currentPoints)
+        bool computerDraw(List<Card> normalDeck, List<Card> computerHand, ref int currentPoints, ref int aces)
         {
             if (currentPoints == 0)
             {
@@ -252,7 +249,8 @@ namespace BlackMagicJack {
             {
                 Card card = draw(normalDeck);
                 computerHand.Add(card);
-                currentPoints = addPoints(card, currentPoints);
+                currentPoints = addPoints(card, currentPoints, ref aces);
+                Console.WriteLine($"The computer drew the {card.value} of {card.suite}");
                 return true;
             }
             return false;
@@ -269,6 +267,7 @@ namespace BlackMagicJack {
             Console.WriteLine("Choose wisely gang u got this fr.");
             Console.Write("Your answer --> ");
             String answer = "";
+            Console.WriteLine();
 
             while (true)
             {
@@ -392,21 +391,21 @@ namespace BlackMagicJack {
             }
             else if (card.value == "Ace")
             {
-                if (currentPoints > 10)
-                {
-                    currentPoints += 1;
-                }
-                else if (currentPoints <= 10)
-                {
-                    currentPoints += 11;
-                }
+                currentPoints += 11;
+                player.aces++;
             }
             else
             {
                 currentPoints += Convert.ToInt32(card.value);
             }
+            while(currentPoints > 21 && player.aces > 0)
+            {
+                currentPoints -= 10;
+                player.aces--;
+            }
 
             player.currentRoundPoints = currentPoints;
+
             if (player.currentRoundPoints > 21)
             {
                 player.currentRoundPoints = 0;
@@ -414,7 +413,7 @@ namespace BlackMagicJack {
             return;
         }
 
-        public int addPoints(Card card, int currentPoints)
+        public int addPoints(Card card, int currentPoints, ref int aces)
         {
 
             if (currentPoints > 21)
@@ -431,13 +430,12 @@ namespace BlackMagicJack {
             }
             else if (card.value == "Ace")
             {
-                if (currentPoints > 10)
+                aces++;
+                currentPoints += 11;
+                while (currentPoints > 21 && aces > 0)
                 {
-                    currentPoints += 1;
-                }
-                else if (currentPoints <= 10)
-                {
-                    currentPoints += 11;
+                    currentPoints -= 10;
+                    aces--;
                 }
             }
             else
@@ -454,49 +452,42 @@ namespace BlackMagicJack {
 
     void checkTriggers(Player player)
         {
-            bool isTriggered1 = false;
-            bool isTriggered2 = false;
-            bool isTriggered3 = false;
-            bool isTriggered4 = false;
-            bool isTriggered5 = false;
-            bool isTriggered6 = false;
-            bool isTriggered7 = false;
 
-            if (player.cardDraws > 100 && !isTriggered1)
+            if (player.cardDraws > 100 && !player.isTriggered1)
             {
                 Console.WriteLine("");
                 Console.WriteLine("Touch grass or something gahdahm.");
-                isTriggered1 = true;
+                player.isTriggered1 = true;
             }
-            if (player.loreDraws >= 5 && !isTriggered6)
+            if (player.loreDraws >= 5 && !player.isTriggered6)
             {
                 //add special ending
-                isTriggered6 = true;
+                player.isTriggered6 = true;
             }
-            if (player.stands > 50 && !isTriggered2)
+            if (player.stands > 50 && !player.isTriggered2)
             {
                 Console.WriteLine("");
                 Console.WriteLine("Maybe you should stop being a lil b***** and stop standing so much.");
-                isTriggered2 = true;
+                player.isTriggered2 = true;
             }
-            if (player.highestRound > 8 && !isTriggered3)
+            if (player.highestRound > 8 && !player.isTriggered3)
             {
                 //trigger minigame
-                isTriggered3 = true;
+                player.isTriggered3 = true;
             }
-            if (player.blackJacks > 10 && !isTriggered4)
+            if (player.blackJacks > 10 && !player.isTriggered4)
             {
                 Console.WriteLine("");
                 Console.WriteLine("Ur always getting lucky these days have this (+1 multiplier).");
                 player.multiplier++;
-                isTriggered4 = true;
+                player.isTriggered4 = true;
             }
-            if (player.busts > 10 && !isTriggered5)
+            if (player.busts > 10 && !player.isTriggered5)
             {
                 Console.WriteLine("");
                 Console.WriteLine("Ok this maybe unfair. Have this to keep going +100 chips).");
                 player.chips += 100;
-                isTriggered5 = true;
+                player.isTriggered5 = true;
             }
         } 
     } 

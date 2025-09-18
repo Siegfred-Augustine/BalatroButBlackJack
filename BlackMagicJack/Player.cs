@@ -26,7 +26,16 @@ namespace BlackMagicJack
         public int blackJacks = 0; //triggers a special text.
         public int busts = 0; //triggers pity chips.
         public int notFollowingInstructions = 0; //triggers all in bet.
-        
+        public int aces = 0;
+
+        bool isTriggered1 = false;
+        bool isTriggered2 = false;
+        bool isTriggered3 = false;
+        bool isTriggered4 = false;
+        bool isTriggered5 = false;
+        bool isTriggered6 = false;
+        bool isTriggered7 = false;
+
         public Player(String name)
         {
             this.name = name;

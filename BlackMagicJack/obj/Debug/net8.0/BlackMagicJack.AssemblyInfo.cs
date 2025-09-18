@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlackMagicJack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73b3a0a87c7a2b5aa8bebb4dd5cde0b84b74f728")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6929ac359ec14abc2135464750d37e98d646bb29")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlackMagicJack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlackMagicJack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
