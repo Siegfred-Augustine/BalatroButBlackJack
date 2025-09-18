@@ -8,7 +8,7 @@ namespace BlackMagicJack
 {
     public class Player
     {
-        public String name = " ";
+        public String name = "";
         public int score = 0;
         public int chips = 0;
         public int cardDraws = 0;
