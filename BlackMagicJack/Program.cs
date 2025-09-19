@@ -11,10 +11,10 @@ namespace BlackMagicJack {
             Console.Clear();
 
             Program program = new Program();
-            Console.WriteLine("Welcome to a Normal Game of BlackJack. You and the computer starts with 2 cards. The computer will show one of it's cards to you." +
-                                "You win when the total value of your cards reach 21 (Black Jack) or is closest to 21. Face cards are treated with a value of 10 and Aces are " +
-                                "treated as 11 or 1 depending on the count. You can draw more cards but \'bust\' if your total goes above 21.\n");
-            Console.WriteLine("Add the amount of chips you are willing to bet and earn a point to add to your score each time you win a round. Good luck!\n");
+            Console.WriteLine("Welcome to a Normal Game of BlackJack. \nYou and the computer starts with 2 cards. \nThe computer will show one of it's cards to you." +
+                                "\nYou win when the total value of your cards reach 21 (Black Jack) or is closest to 21. \nFace cards are treated with a value of 10 and Aces are " +
+                                "treated as 11 or 1 depending on the count. \nYou can draw more cards but \'bust\' if your total goes above 21.\n");
+            Console.WriteLine("Add the amount of chips you are willing to bet and earn a point to add to your score each time you win a round. \nGood luck!\n");
             Console.Write("Your name --> ");
             String name = Console.ReadLine();
 
@@ -32,6 +32,7 @@ namespace BlackMagicJack {
             int totalCardCount = 0;
             int roundNum = 0;
             int aces = 0;
+            String choice = "";
 
             List<Card> normalDeck = new List<Card>();
             List<Card> evilDeck = new List<Card>();
@@ -49,6 +50,46 @@ namespace BlackMagicJack {
                 Program.checkTriggers(player);
 
                 Console.Clear();
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("[A] Start Round.");
+                Console.WriteLine("[B] Check inventory.");
+                Console.Write("--> ");
+
+                while (true)
+                {
+                    Console.Clear();
+                    Console.WriteLine("What do you want to do?");
+                    Console.WriteLine("[A] Start Round.");
+                    Console.WriteLine("[B] Check inventory.");
+                    Console.Write("--> ");
+
+                    try
+                    {
+                        choice = Console.ReadLine().ToLower();
+                        if (choice == "a" || choice == "b")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Just choose one please.");
+                            player.notFollowingInstructions++;
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Ur getting on my nerves");
+                        player.notFollowingInstructions++;
+                    }
+                }
+                if (choice == "b")
+                {
+                    Program.viewInventory(player);
+                    continue;
+                }
+                Console.Clear();
+
                 player.currentRoundPoints = 0;
                 roundNum++;
                 Console.WriteLine($"Hi {player.name}, here are your current stats.\nCards Drawn : {player.cardDraws}\nBlackJacks :  {player.blackJacks}\nBusts : {player.busts}");
@@ -233,7 +274,7 @@ namespace BlackMagicJack {
                 return false;
             }
 
-            while (computerDraw(normalDeck, computerHand, ref computerHandValue, ref aces));
+            while (computerDraw(normalDeck, computerHand, ref computerHandValue, ref aces, player));
 
                 for (int i = 1; i < computerHand.Count; i++)
                 {
@@ -252,7 +293,7 @@ namespace BlackMagicJack {
             return true;
         }
 
-        bool computerDraw(List<Card> normalDeck, List<Card> computerHand, ref int currentPoints, ref int aces)
+        bool computerDraw(List<Card> normalDeck, List<Card> computerHand, ref int currentPoints, ref int aces, Player player)
         {
             if (currentPoints == 0)
             {
@@ -269,7 +310,7 @@ namespace BlackMagicJack {
                 return false;
             }
 
-            else if (currentPoints < 17)
+            else if (currentPoints < 17 || player.currentRoundPoints > currentPoints)
             {
                 Card card = draw(normalDeck);
                 computerHand.Add(card);
@@ -544,5 +585,25 @@ namespace BlackMagicJack {
                 player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 7));
             }
         } 
-    } 
+
+        public static void viewInventory(Player player)
+        {
+            Console.Clear();
+            Console.WriteLine("Inventory\n\n");
+            
+            if(player.playerInventory.Count == 0)
+            {
+                Console.WriteLine("Empty...");
+            }
+            else
+            {
+                foreach (Items item in player.playerInventory)
+                {
+                    Console.WriteLine($"{item.itemName} - ({item.itemDesc})");
+                }
+            }
+            Console.WriteLine("\n\nPress any key to go back");
+            Console.Read();
+        }
+    }
 }

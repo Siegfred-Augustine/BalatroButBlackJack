@@ -28,7 +28,7 @@ namespace BlackMagicJack
         public int aces = 0;
         public bool storyLineTrigger = false;
         public Storyline storyline = Storyline.DeadbeatDad;
-        public List<Items> availableItems;
+        public List<Items> availableItems = new List<Items>();
         public List<Items> playerInventory = new List<Items>();
 
         public Player(String name)
@@ -431,7 +431,7 @@ public class Items
                     Thread.Sleep(2000);
                     Console.WriteLine("You get to the venue and see nobody was left. You decided to head to the casino.");
                     Thread.Sleep(2000);
-                    Console.WriteLine("You sa a Diamond Ring on the way. Do you pick it up? [y/n]");
+                    Console.WriteLine("You saw a Diamond Ring on the way. Do you pick it up? [y/n]");
                     Thread.Sleep(2000);
 
                     while (true)

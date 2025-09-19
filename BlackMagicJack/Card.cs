@@ -98,18 +98,21 @@ namespace BlackMagicJack
                     break;
                 case 2:
                     Console.WriteLine("Good luck trying to win now (-1 multiplier)");
-                    player.multiplier--;
+                    if (player.multiplier < 1)
+                        break;
+                    else
+                        player.multiplier--;
                     break;
                 case 3:
                     Console.WriteLine("You don't deserve bonuses (no bonus cards)");
-                    while(bonusDeck.Count != 0)
+                    while (bonusDeck.Count != 0)
                     {
                         bonusDeck.RemoveAt(0);
                     }
                     break;
                 case 4:
-                    Console.WriteLine("I'm feeling generous today (+2 multiplier)");
-                    player.multiplier += 2;
+                    Console.WriteLine("I'm feeling generous today (+1 multiplier)");
+                    player.multiplier += 1;
                     break;
                 case 5:
                     Console.WriteLine("Evil Deck Refill!");
@@ -126,9 +129,9 @@ namespace BlackMagicJack
                     BonusCard.initialize(bonusDeck);
                     break;
                 case 8:
-                    Console.WriteLine("ACES!!");
+                    Console.WriteLine("ACES!! in ur deck!!");
                     int rand = RNG.random.Next(2, 10);
-                    for (int i = 0; i< rand; i++)
+                    for (int i = 0; i < rand; i++)
                     {
                         normalDeck.Add(new NormalCard("Ace", "Spades"));
                     }
@@ -140,8 +143,8 @@ namespace BlackMagicJack
                 case 10:
                     player.storyLineTrigger = true;
                     break;
+                }
             }
-        }
 
         public EvilCard(eRarity rarity, String value, String suite)
         {
