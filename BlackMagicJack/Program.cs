@@ -536,13 +536,6 @@ namespace BlackMagicJack {
                 Items.matchTrigger(player);
                 player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 5));
             }
-            if (player.clubDraws > 50 && player.availableItems.Any(i => i.itemID == 5))
-            {
-                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 5);
-                player.playerInventory.Add(item);
-                Items.matchTrigger(player);
-                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 5));
-            }
             if (player.score > 20 && player.availableItems.Any(i => i.itemID == 7))
             {
                 Items item = player.availableItems.FirstOrDefault(i => i.itemID == 7);
