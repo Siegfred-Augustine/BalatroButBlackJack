@@ -5,21 +5,28 @@ namespace BlackMagicJack {
     class Program {
         static void Main(string[] args) {
 
-            Program program = new Program();
-            program.gameStart();
+            Player player = new Player("Default Name");
+            player.storyline = Items.intro(player);
 
-        }
-        void gameStart()
-        {
+            Console.Clear();
+
+            Program program = new Program();
             Console.WriteLine("Welcome to a Normal Game of BlackJack. You and the computer starts with 2 cards. The computer will show one of it's cards to you." +
                                 "You win when the total value of your cards reach 21 (Black Jack) or is closest to 21. Face cards are treated with a value of 10 and Aces are " +
                                 "treated as 11 or 1 depending on the count. You can draw more cards but \'bust\' if your total goes above 21.\n");
             Console.WriteLine("Add the amount of chips you are willing to bet and earn a point to add to your score each time you win a round. Good luck!\n");
             Console.Write("Your name --> ");
             String name = Console.ReadLine();
+
             if (name == null || name == "")
-                name = "This person has no name";
-            Player player = new Player(name);
+                name = "Someone Hiding";
+            player.name = name;
+            program.gameStart(player);
+
+        }
+        void gameStart(Player player)
+        {
+            
             player.chips = 100;
             int playerBet = 0;
             int totalCardCount = 0;
@@ -38,6 +45,9 @@ namespace BlackMagicJack {
 
             while (totalCardCount > 15 && player.chips > 0)
             {
+                Console.Clear();
+                Program.checkTriggers(player);
+
                 Console.Clear();
                 player.currentRoundPoints = 0;
                 roundNum++;
@@ -124,7 +134,6 @@ namespace BlackMagicJack {
 
             switch (card.rarity)
             {
-                case eRarity.IDK: player.loreDraws++; break;
                 case eRarity.Special: player.specialDraws++; break;
                 case eRarity.Evil: player.evilDraws++; break;
             }
@@ -235,7 +244,6 @@ namespace BlackMagicJack {
             playerHandValue = player.currentRoundPoints;
 
             Console.WriteLine();
-            Program.checkTriggers(player);
 
             if (computerHandValue > playerHandValue || computerHandValue == playerHandValue)
             {
@@ -367,7 +375,16 @@ namespace BlackMagicJack {
             Console.WriteLine("You have drawn the " + currentCard.value + " of " + currentCard.suite);
             incrementCardCounter(player, currentCard);
             playerHand.Add(currentCard);
-            currentCard.special(player, normalDeck, evilDeck, bonusDeck);
+
+            if (currentCard.value == "Joker")
+            {
+                while (normalDeck.Count > 21)
+                {
+                    normalDeck.RemoveAt(RNG.random.Next(normalDeck.Count - 1));
+                }
+            }
+            else { currentCard.special(player, normalDeck, evilDeck, bonusDeck); }
+
             addPoints(currentCard, player);
 
             if (player.currentRoundPoints == 0)
@@ -403,7 +420,7 @@ namespace BlackMagicJack {
         {
             int currentPoints = player.currentRoundPoints;
 
-            if (card.value == "Jack" || card.value == "Queen" || card.value == "King")
+            if (card.value == "Jack" || card.value == "Queen" || card.value == "King" || card.value == "Joker")
             {
                 currentPoints += 10;
             }
@@ -434,7 +451,7 @@ namespace BlackMagicJack {
 
         public void addPoints(Card card, ref int currentPoints, ref int aces)
         {
-            if (card.value == "Jack" || card.value == "Queen" || card.value == "King")
+            if (card.value == "Jack" || card.value == "Queen" || card.value == "King" || card.value == "Joker")
             {
                 currentPoints += 10;
             }
@@ -460,41 +477,78 @@ namespace BlackMagicJack {
 
         public static void checkTriggers(Player player)
         {
-            if (player.cardDraws > 100 && !player.isTriggered1)
+            if (player.storyLineTrigger && player.availableItems.Count != 0)
             {
-                Console.WriteLine("");
-                Console.WriteLine("Touch grass or something gahdahm.");
-                player.isTriggered1 = true;
+                Items.itemTrigger(player.availableItems[0], player);
+                player.storyLineTrigger = false;
+                return;
             }
-            if (player.loreDraws >= 5 && !player.isTriggered6)
+            if (player.cardDraws > 200 && !player.playerInventory.Any(i => i.itemID == 2))
             {
-                //add special ending
-                player.isTriggered6 = true;
+                Items item = new Items("Briefcase", "An empty black briefcase.", 2);
+                player.playerInventory.Add(item);
+                item.briefCaseTrigger();
             }
-            if (player.stands > 50 && !player.isTriggered2)
+            if (player.busts >= 50 && !player.playerInventory.Any(i => i.itemID == 6))
             {
-                Console.WriteLine("");
-                Console.WriteLine("Maybe you should stop being a lil b***** and stop standing so much.");
-                player.isTriggered2 = true;
+                Items item = new Items("Glock 17", "A gun with a bullet in the chamber.", 6);
+                player.playerInventory.Add(item);
+                item.gunTrigger();
             }
-            if (player.highestRound > 8 && !player.isTriggered3)
+            if (player.evilDraws > 100 && !player.playerInventory.Any(i => i.itemID == 8))
             {
-                //trigger minigame
-                player.isTriggered3 = true;
+                Items item = new Items("Bloody Diamond Ring", "This isn't yours", 8);
+                player.playerInventory.Add(item);
+                item.ringTrigger();
             }
-            if (player.blackJacks > 10 && !player.isTriggered4)
+            if (player.chips > 5000 && player.availableItems.Any(i => i.itemID == 1))
             {
-                Console.WriteLine("");
-                Console.WriteLine("Ur always getting lucky these days have this (+1 multiplier).");
-                player.multiplier++;
-                player.isTriggered4 = true;
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 1);
+                player.playerInventory.Add(item);
+                Items.hospitalBillTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 1));
             }
-            if (player.busts > 10 && !player.isTriggered5)
+            if (player.blackJacks > 50 && player.availableItems.Any(i => i.itemID == 9))
             {
-                Console.WriteLine("");
-                Console.WriteLine("Ok this maybe unfair. Have this to keep going +100 chips).");
-                player.chips += 100;
-                player.isTriggered5 = true;
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 9);
+                player.playerInventory.Add(item);
+                Items.hennyBottleTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 9));
+            }
+            if (player.specialDraws > 50 && player.availableItems.Any(i => i.itemID == 3))
+            {
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 3);
+                player.playerInventory.Add(item);
+                Items.recitalInvTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 3));
+            }
+            if (player.diamondDraws > 50 && player.availableItems.Any(i => i.itemID == 4))
+            {
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 4);
+                player.playerInventory.Add(item);
+                Items.gasCanTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 4));
+            }
+            if (player.clubDraws > 50 && player.availableItems.Any(i => i.itemID == 5))
+            {
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 5);
+                player.playerInventory.Add(item);
+                Items.matchTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 5));
+            }
+            if (player.clubDraws > 50 && player.availableItems.Any(i => i.itemID == 5))
+            {
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 5);
+                player.playerInventory.Add(item);
+                Items.matchTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 5));
+            }
+            if (player.score > 20 && player.availableItems.Any(i => i.itemID == 7))
+            {
+                Items item = player.availableItems.FirstOrDefault(i => i.itemID == 7);
+                player.playerInventory.Add(item);
+                Items.carKeyTrigger(player);
+                player.availableItems.Remove(player.availableItems.FirstOrDefault(i => i.itemID == 7));
             }
         } 
     } 

@@ -39,8 +39,6 @@ namespace BlackMagicJack
                     return "King";
                 case 14:
                     return "Joker";
-                case 15:
-                    return "This Card is not EVIL";
                 default:
                     return Convert.ToString(value);
             }
@@ -88,8 +86,11 @@ namespace BlackMagicJack
             switch (index)
             {
                 case 0:
-                    Console.WriteLine("I'm taking ur chips brodie");
-                    player.chips -= 50;
+                    Console.WriteLine("Something funny happened.");
+                    for(int i = 0; i < 15; i++)
+                    {
+                        evilDeck.Add(new EvilCard(eRarity.Evil, valueConverter(14), "Blacks"));
+                    }
                     break;
                 case 1:
                     Console.WriteLine("Say goodbye to 20 cards.");
@@ -137,7 +138,7 @@ namespace BlackMagicJack
                     player.chips++;
                     break;
                 case 10:
-                    Console.WriteLine("You triggered something bad");
+                    player.storyLineTrigger = true;
                     break;
             }
         }
@@ -228,8 +229,17 @@ namespace BlackMagicJack
                     Console.WriteLine("JACKPOT");
                     break;
                 case 4:
-                    BonusCard.initialize(deck);
-                    Console.WriteLine("Your bonus cards have been replenished");
+                    int pos = RNG.random.Next(player.availableItems.Count);
+                    if (pos == 0)
+                    {
+                        Console.WriteLine("You know what you have to do.");
+                        break;
+                    }
+                    Items item = player.availableItems[pos];
+                    
+                    player.playerInventory.Add(item);
+                    player.availableItems.RemoveAt(pos);
+                    Console.WriteLine($"{item.itemName} has been added to your inventory.");
                     break;
             }
         }
