@@ -7,7 +7,7 @@ namespace BlackMagicJack {
 
             Player player = new Player("Default Name");
             player.storyline = Items.intro(player);
-
+            Items.intializeItems(player, player.storyline);
             Console.Clear();
 
             Program program = new Program();
@@ -192,6 +192,7 @@ namespace BlackMagicJack {
                 {
                     Console.WriteLine("Since ur not following instructions, you're betting everything this round.");
                     playerBet = player.chips;
+                    player.chips -= playerBet;
                     player.notFollowingInstructions = 0;
                     break;
                 }
@@ -428,7 +429,7 @@ namespace BlackMagicJack {
 
             addPoints(currentCard, player);
 
-            if (player.currentRoundPoints == 0)
+            if (player.currentRoundPoints == 0 || player.currentRoundPoints > 21)
             {
                 return false;
             }

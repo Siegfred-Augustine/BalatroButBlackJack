@@ -150,7 +150,7 @@ public class Items
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
-            player.playerInventory.Add(new Items("Recital Invitation", "It's too crumpled to be read.", 3));
+            //player.playerInventory.Add(new Items("Recital Invitation", "It's too crumpled to be read.", 3));
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
         }
@@ -172,7 +172,7 @@ public class Items
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
-            player.playerInventory.Add(new Items("Gas Can", "A cannister for gasoline. It's already empty though.", 4));
+            //player.playerInventory.Add(new Items("Gas Can", "A cannister for gasoline. It's already empty though.", 4));
             Thread.Sleep(2000);
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
@@ -196,7 +196,7 @@ public class Items
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
-            player.playerInventory.Add(new Items("Matches", "A box of matches. Some of them are used.", 5));
+            //player.playerInventory.Add(new Items("Matches", "A box of matches. Some of them are used.", 5));
             Thread.Sleep(2000);
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
@@ -242,7 +242,7 @@ public class Items
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
-            player.playerInventory.Add(new Items("Car Keys", "How did you get here?", 7));
+            //player.playerInventory.Add(new Items("Car Keys", "How did you get here?", 7));
             Thread.Sleep(2000);
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
@@ -289,7 +289,7 @@ public class Items
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
-            player.playerInventory.Add(new Items("Henessy Bottle", "They don't serve this here.", 9));
+            //player.playerInventory.Add(new Items("Henessy Bottle", "They don't serve this here.", 9));
             Thread.Sleep(2000);
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();

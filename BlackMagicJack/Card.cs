@@ -239,7 +239,7 @@ namespace BlackMagicJack
                     break;
                 case 4:
                     int pos = RNG.random.Next(player.availableItems.Count);
-                    if (pos == 0)
+                    if (player.availableItems.Count == 0)
                     {
                         Console.WriteLine("You know what you have to do.");
                         break;
@@ -248,6 +248,7 @@ namespace BlackMagicJack
                     
                     player.playerInventory.Add(item);
                     player.availableItems.RemoveAt(pos);
+                    Items.itemTrigger(item, player);
                     Console.WriteLine($"{item.itemName} has been added to your inventory.");
                     break;
             }
@@ -270,7 +271,20 @@ namespace BlackMagicJack
         }
         public override void special(Player player, List<Card> normalDeck, List<Card> evilDeck, List<Card> bonusDeck)
         {
-            BonusAction(RNG.random.Next(5), player, bonusDeck);
+            int balancer = RNG.random.Next(100);
+            int range = 0;
+
+            if (balancer < 10)
+                range = 4;
+            else if (balancer < 30)
+                range = 3;
+            else if (balancer < 50)
+                range = 2;
+            else if (balancer < 70)
+                range = 1;
+            else if (balancer < 100)
+                range = 0;
+            BonusAction(range, player, bonusDeck);
         }
 
     }
