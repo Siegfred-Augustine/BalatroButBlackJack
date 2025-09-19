@@ -15,10 +15,12 @@ namespace BlackMagicJack
         Bonus,
         IDK
     }
+
     public static class RNG
     {
         public static Random random = new Random();
     }
+
     public class Card
     {
         public String suite;
@@ -81,11 +83,11 @@ namespace BlackMagicJack
     }
     class EvilCard : Card
     {
-        public void Action(int index, Player player, List<Card> normalDeck, List<Card> evilDeck, List<Card> bonusDeck)
+        public void Action(int index, Player player, List<Card> normalDeck, List<Card> evilDeck, List<Card> bonusDeck) //Activates the cards' special effect based on the rarity
         {
             switch (index)
             {
-                case 0:
+                case 0://Adds Joker cards that will reduce a deck to 20 cards
                     Console.WriteLine("Something funny happened.");
                     for(int i = 0; i < 15; i++)
                     {
@@ -195,7 +197,11 @@ namespace BlackMagicJack
         }
         public static void cardStealer(List<Card> deck)
         {
-            for(int i = 0; i < 20; i++)
+            int count = 20;
+            if (deck.Count < 20)
+                count = deck.Count;
+
+            for(int i = 0; i < deck.Count; i++)
             {
                 int index = RNG.random.Next(deck.Count);
                 deck.RemoveAt(index);
