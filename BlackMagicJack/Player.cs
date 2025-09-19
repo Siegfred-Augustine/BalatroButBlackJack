@@ -307,7 +307,7 @@ public class Items
             Console.WriteLine("[A] Go to the Casino right now.");
             Console.WriteLine("[B] Stay at home for a bit.");
             Console.WriteLine("[C] Check your calendar to see what you should do.");
-            Console.Write("-->");
+            Console.Write("--> ");
 
             String answer = "a";
             while(true)
@@ -374,6 +374,7 @@ public class Items
                     Thread.Sleep(2000);
                     Console.WriteLine("You go to the Casino.");
                     Console.WriteLine("");
+                    Thread.Sleep(3000);
                     return Storyline.DeadbeatDad;
 
                 case "b":
@@ -418,6 +419,7 @@ public class Items
                     Thread.Sleep(2000);
                     Console.WriteLine("You go to the Casino.");
                     Console.WriteLine("");
+                    Thread.Sleep(3000);
                     return Storyline.NothingLeftToLose;
 
                 case "c":
@@ -463,6 +465,7 @@ public class Items
                     Thread.Sleep(2000);
                     Console.WriteLine("You go to the Casino.");
                     Console.WriteLine("");
+                    Thread.Sleep(3000);
                     return Storyline.DrownedInSorrow;
                 default:
                     return Storyline.DeadbeatDad;
