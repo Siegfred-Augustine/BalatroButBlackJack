@@ -143,6 +143,7 @@ namespace BlackMagicJack
                     player.chips++;
                     break;
                 case 10:
+                    Console.WriteLine("It's been a while.\n");
                     player.storyLineTrigger = true;
                     break;
                 }
