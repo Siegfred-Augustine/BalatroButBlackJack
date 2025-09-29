@@ -1,7 +1,7 @@
 # BalatroButBlackJack
 
 > [!WARNING] 
-> *This branch is made for the sole purpose of testing git commands.*
+> *This branch was made for the sole purpose of testing git commands.*
 
 ## Branch Description
 
